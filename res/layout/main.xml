@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/main_screen"
     >
-</LinearLayout>
+    <Button
+            android:id="@+id/start_button"
+            android:layout_width="100pt"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120pt"
+            android:text="@string/start_button_text"/>
+    <Button
+            android:id="@+id/prepare_button"
+            android:layout_width="100pt"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/start_button"
+            android:text="@string/prepare_button_text"/>
+    <TextView
+            android:id="@+id/word_counter_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prepare_button"
+            android:layout_centerHorizontal="true"
+            android:text="@string/word_counter_text"
+            android:textSize="8pt"
+            />
+    <TextView
+            android:id="@+id/player_counter_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/word_counter_text"
+            android:layout_centerHorizontal="true"
+            android:text="@string/player_counter_text"
+            android:textSize="8pt"
+            />
+</RelativeLayout>
 
