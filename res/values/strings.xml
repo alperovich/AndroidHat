@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AndroidHat</string>
+    <string name="title_text">Шляпа!</string>
     <string name="start_button_text">Начать игру!</string>
-    <string name="prepare_button_text">Подготовить игру</string>
-    <string name="word_counter_text">Слов в шляпе: </string>
+    <string name="edit_words_button_text">Слова</string>
+    <string name="edit_players_button_text">Игроки</string>
+    <string name="word_counter_text">Слов: </string>
     <string name="player_counter_text">Игроков: </string>
 </resources>
