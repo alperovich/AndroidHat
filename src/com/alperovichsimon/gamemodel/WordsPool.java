@@ -50,6 +50,10 @@ public class WordsPool {
         return pool.get(indexes.get(curIndex));
     }
 
+    public int getWordsNumber(){
+        return pool.size();
+    }
+
 
 
     public static synchronized WordsPool getInstance() {

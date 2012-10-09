@@ -7,4 +7,11 @@
     <string name="edit_players_button_text">Игроки</string>
     <string name="word_counter_text">Слов: </string>
     <string name="player_counter_text">Игроков: </string>
+    <string name="words_minus_text"> - </string>
+    <string name="words_plus_text"> + </string>
+    <string name="hard_level_text">Сложные</string>
+    <string name="medium_level_text">Средние</string>
+    <string name="easy_level_text">Легкие</string>
+    <string name="add_words_text">Добавить</string>
+    <string name="delete_words_text">Удалить все слова</string>
 </resources>

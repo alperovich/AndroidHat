@@ -43,12 +43,16 @@ public class PlayersPool {
         guessedNumber.put(player, guessedNumber.get(player) + 1);
     }
 
-    public int  getNumberOfGuessedWords(Player player) {
+    public int getNumberOfGuessedWords(Player player) {
         if (!guessedNumber.containsKey(player)) {
             Logger.log("no such player: " + player + "in pool");
             return 0;
         }
         return guessedNumber.get(player);
+    }
+
+    public int getPlayersNumber(){
+        return pool.size();
     }
 
 
