@@ -16,6 +16,9 @@ public class WordsPool {
     private Map<String, Boolean> guessed = new HashMap<String, Boolean>();
     private List<Integer> indexes = new ArrayList<Integer>();
     private int curIndex = 0;
+    private int hard;
+    private int medium;
+    private int easy;
 
     private WordsPool() {
 
@@ -25,6 +28,32 @@ public class WordsPool {
         pool.add(word);
         guessed.put(word, false);
         indexes.add(pool.size());
+    }
+
+    public void addWord(String word, Level level){
+        addWord(word);
+        switch (level){
+            case HARD:
+                ++hard;
+                break;
+            case MEDIUM:
+                ++medium;
+                break;
+            case EASY:
+                ++easy;
+        }
+    }
+
+    public int getHardNumber(){
+        return hard;
+    }
+
+    public int getMediumNumber(){
+        return medium;
+    }
+
+    public int getEasyNumber(){
+        return easy;
     }
 
     public void wordGuessed(String word){
@@ -61,5 +90,11 @@ public class WordsPool {
             INSTANCE = new WordsPool();
         }
         return INSTANCE;
+    }
+
+    public enum Level{
+        HARD,
+        MEDIUM,
+        EASY
     }
 }

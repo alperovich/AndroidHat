@@ -43,12 +43,11 @@ public class MainActivity extends Activity {
             }
         });
 
-        final TextView wordsCounter = (TextView) findViewById(R.id.word_counter_text);
     }
 
     private void update() {
-        wordsCounter.setText(R.string.word_counter_text + WordsPool.getInstance().getWordsNumber());
-        playersCounter.setText(R.string.player_counter_text + PlayersPool.getInstance().getPlayersNumber());
+        wordsCounter.setText(getString(R.string.word_counter_text) + " " + WordsPool.getInstance().getWordsNumber());
+        playersCounter.setText(getString(R.string.player_counter_text) + " " + PlayersPool.getInstance().getPlayersNumber());
     }
 
 }

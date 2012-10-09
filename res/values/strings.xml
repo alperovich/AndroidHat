@@ -5,8 +5,8 @@
     <string name="start_button_text">Начать игру!</string>
     <string name="edit_words_button_text">Слова</string>
     <string name="edit_players_button_text">Игроки</string>
-    <string name="word_counter_text">Слов: </string>
-    <string name="player_counter_text">Игроков: </string>
+    <string name="word_counter_text">Слов:</string>
+    <string name="player_counter_text">Игроков:</string>
     <string name="words_minus_text"> - </string>
     <string name="words_plus_text"> + </string>
     <string name="hard_level_text">Сложные</string>

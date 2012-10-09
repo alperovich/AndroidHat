@@ -2,15 +2,16 @@ package com.alperovichsimon;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+import android.widget.*;
+import com.alperovichsimon.gamemodel.WordsPool;
+import com.alperovichsimon.logger.Logger;
 
 
 /**
@@ -21,7 +22,12 @@ import android.widget.TextView;
 public class WordsActivity extends Activity {
     private Button plusButton;
     private Button minusButton;
-    private TextView wordsText;
+    private Button addButton;
+    private EditText wordsText;
+    private RadioButton hardRadioButton;
+    private RadioButton mediumRadioButton;
+    private RadioButton easyRadioButton;
+    private TextView wordsCounter;
 
     private final int DEFAULT_WORDS_NUMBER = 10;
     private final int MAX_WORDS_NUMBER = 10000;
@@ -30,9 +36,14 @@ public class WordsActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        wordsText = (TextView) findViewById(R.id.words_number_text);
+        wordsText = (EditText) findViewById(R.id.words_number_text);
         minusButton = (Button) findViewById(R.id.minus_words_button);
         plusButton = (Button) findViewById(R.id.plus_words_button);
+        addButton = (Button) findViewById(R.id.add_words_button);
+        hardRadioButton = (RadioButton) findViewById(R.id.hard_level_button);
+        mediumRadioButton = (RadioButton) findViewById(R.id.medium_level_button);
+        easyRadioButton = (RadioButton) findViewById(R.id.easy_level_button);
+        wordsCounter = (TextView) findViewById(R.id.word_counter_text);
         prepare();
         update();
     }
@@ -52,13 +63,21 @@ public class WordsActivity extends Activity {
         minusButton.setOnClickListener(minusListener());
         plusButton.setOnClickListener(plusListener());
         wordsText.setFilters(new InputFilter[]{new IntervalFilter(1, MAX_WORDS_NUMBER)});
-      //  wordsText.setOnEditorActionListener(counterListener());
+        wordsText.addTextChangedListener(numberWatcher());
+        addButton.setOnClickListener(addButtonListener());
     }
 
     private void update() {
+        WordsPool pool = WordsPool.getInstance();
         StringBuilder builder = new StringBuilder();
         builder.append(currentNumber);
-        wordsText.setText(new StringBuffer(builder));
+        wordsText.setText(builder.toString());
+
+        hardRadioButton.setText(getString(R.string.hard_level_text) + " " + pool.getHardNumber());
+        mediumRadioButton.setText(getString(R.string.medium_level_text) + " " + pool.getMediumNumber());
+        easyRadioButton.setText(getString(R.string.easy_level_text) + " " + pool.getEasyNumber());
+
+        wordsCounter.setText(getString(R.string.word_counter_text) + pool.getWordsNumber());
     }
 
     private View.OnClickListener minusListener() {
@@ -87,25 +106,46 @@ public class WordsActivity extends Activity {
         };
     }
 
-    private TextView.OnEditorActionListener counterListener() {
-        return new TextView.OnEditorActionListener() {
+    private TextWatcher numberWatcher() {
+        return new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    String curText = textView.getText().toString();
-                    if (curText.length() == 0) {
-                        return false;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                try {
+                    if (editable.toString().equals("")) {
+                        currentNumber = 0;
+                        return;
                     }
-                    int wordsNum = Integer.parseInt(curText);
-                    if (Integer.parseInt(textView.getText().toString()) > MAX_WORDS_NUMBER) {
-                        return false;
-                    } else {
-                        currentNumber = wordsNum;
-                    }
-                    return true;
+
+                    currentNumber = Integer.parseInt(editable.toString());
+                } catch (NumberFormatException e) {
+                    Logger.log(e.getMessage());
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener addButtonListener(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (hardRadioButton.isChecked()){
+                    WordsPool.getInstance().addWord("", WordsPool.Level.HARD);
+                } else if (mediumRadioButton.isChecked()){
+                    WordsPool.getInstance().addWord("", WordsPool.Level.MEDIUM);
+                } else if (easyRadioButton.isChecked()){
+                    WordsPool.getInstance().addWord("", WordsPool.Level.EASY);
                 }
                 update();
-                return false;
             }
         };
     }
@@ -123,23 +163,23 @@ public class WordsActivity extends Activity {
 
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            try{
+            try {
                 StringBuilder resultString = new StringBuilder();
                 resultString.append(dest.toString().substring(0, dstart));
                 resultString.append(source.subSequence(start, end));
                 resultString.append(dest.toString().substring(dend, dest.length()));
 
-                if (resultString.toString().equals("")){
+                if (resultString.toString().equals("")) {
                     return null;
                 }
 
                 int result = Integer.parseInt(resultString.toString());
 
-                if (result < this.start || result > this.end){
+                if (result < this.start || result > this.end) {
                     return "";
                 }
                 return null;
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 return "";
             }
         }

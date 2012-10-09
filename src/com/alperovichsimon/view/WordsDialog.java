@@ -12,5 +12,4 @@ public class WordsDialog extends AlertDialog {
     protected WordsDialog(Context context) {
         super(context);
     }
-
 }
