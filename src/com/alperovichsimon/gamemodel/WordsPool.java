@@ -12,7 +12,7 @@ import java.util.*;
 public class WordsPool {
     private static WordsPool INSTANCE;
 
-    private List<String> pool = new ArrayList<String>();
+    private ArrayList<String> pool = new ArrayList<String>();
     private Map<String, Boolean> guessed = new HashMap<String, Boolean>();
     private List<Integer> indexes = new ArrayList<Integer>();
     private int curIndex = 0;
@@ -83,6 +83,15 @@ public class WordsPool {
         return pool.size();
     }
 
+    public void deleteAll() {
+        pool.clear();
+        guessed.clear();
+        indexes.clear();
+        curIndex = 0;
+        hard = 0;
+        medium = 0;
+        easy = 0;
+    }
 
 
     public static synchronized WordsPool getInstance() {

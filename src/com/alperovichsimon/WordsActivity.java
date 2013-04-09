@@ -32,6 +32,7 @@ public class WordsActivity extends Activity {
     private final int DEFAULT_WORDS_NUMBER = 10;
     private final int MAX_WORDS_NUMBER = 10000;
     private int currentNumber = DEFAULT_WORDS_NUMBER;
+    private Button deleteButton;
 
     @Override
     protected void onStart() {
@@ -43,6 +44,7 @@ public class WordsActivity extends Activity {
         hardRadioButton = (RadioButton) findViewById(R.id.hard_level_button);
         mediumRadioButton = (RadioButton) findViewById(R.id.medium_level_button);
         easyRadioButton = (RadioButton) findViewById(R.id.easy_level_button);
+        deleteButton = (Button) findViewById(R.id.delete_words_button);
         wordsCounter = (TextView) findViewById(R.id.word_counter_text);
         prepare();
         update();
@@ -65,6 +67,17 @@ public class WordsActivity extends Activity {
         wordsText.setFilters(new InputFilter[]{new IntervalFilter(1, MAX_WORDS_NUMBER)});
         wordsText.addTextChangedListener(numberWatcher());
         addButton.setOnClickListener(addButtonListener());
+        deleteButton.setOnClickListener(deleteListener());
+    }
+
+    private View.OnClickListener deleteListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WordsPool.getInstance().deleteAll();
+                update();
+            }
+        };
     }
 
     private void update() {
@@ -81,27 +94,25 @@ public class WordsActivity extends Activity {
     }
 
     private View.OnClickListener minusListener() {
-        return new View.OnClickListener() {
+        return new MyOnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void doOnClick(View view) {
                 if (currentNumber <= 0) {
                     return;
                 }
                 --currentNumber;
-                update();
             }
         };
     }
 
     private View.OnClickListener plusListener() {
-        return new View.OnClickListener() {
+        return new MyOnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void doOnClick(View view) {
                 if (currentNumber >= MAX_WORDS_NUMBER) {
                     return;
                 }
                 ++currentNumber;
-                update();
             }
         };
     }
@@ -134,20 +145,25 @@ public class WordsActivity extends Activity {
         };
     }
 
-    private View.OnClickListener addButtonListener(){
-        return new View.OnClickListener() {
+    private View.OnClickListener addButtonListener() {
+        return new MyOnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (hardRadioButton.isChecked()){
-                    WordsPool.getInstance().addWord("", WordsPool.Level.HARD);
-                } else if (mediumRadioButton.isChecked()){
-                    WordsPool.getInstance().addWord("", WordsPool.Level.MEDIUM);
-                } else if (easyRadioButton.isChecked()){
-                    WordsPool.getInstance().addWord("", WordsPool.Level.EASY);
+            public void doOnClick(View view) {
+                if (hardRadioButton.isChecked()) {
+                    addWords(WordsPool.Level.HARD);
+                } else if (mediumRadioButton.isChecked()) {
+                    addWords(WordsPool.Level.MEDIUM);
+                } else if (easyRadioButton.isChecked()) {
+                    addWords(WordsPool.Level.EASY);
                 }
-                update();
             }
         };
+    }
+
+    private void addWords(WordsPool.Level level) {
+        for (int i = 0; i != currentNumber; ++i) {
+            WordsPool.getInstance().addWord("", level);
+        }
     }
 
 
@@ -183,5 +199,15 @@ public class WordsActivity extends Activity {
                 return "";
             }
         }
+    }
+
+    private abstract class MyOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            doOnClick(view);
+            update();
+        }
+
+        public abstract void doOnClick(View view);
     }
 }
