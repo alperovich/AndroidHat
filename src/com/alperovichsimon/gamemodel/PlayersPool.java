@@ -14,6 +14,7 @@ public class PlayersPool {
 
     private Map<Player, Integer> guessedNumber = new LinkedHashMap<Player, Integer>();
     private List<Player> pool = new ArrayList<Player>();
+    private int kkk=0;
 
 
     private PlayersPool() {
