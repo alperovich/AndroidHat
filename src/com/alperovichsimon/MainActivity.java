@@ -42,12 +42,17 @@ public class MainActivity extends Activity {
                 MainActivity.this.startActivity(intent);
             }
         });
-
     }
 
     private void update() {
         wordsCounter.setText(getString(R.string.word_counter_text) + " " + WordsPool.getInstance().getWordsNumber());
         playersCounter.setText(getString(R.string.player_counter_text) + " " + PlayersPool.getInstance().getPlayersNumber());
+    }
+
+    public void newGameButtonClick(View view)
+    {
+        Intent intent = new Intent(MainActivity.this, GameActivity.class);
+        MainActivity.this.startActivity(intent);
     }
 
 }

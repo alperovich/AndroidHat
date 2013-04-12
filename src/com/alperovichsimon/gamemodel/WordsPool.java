@@ -93,7 +93,6 @@ public class WordsPool {
         easy = 0;
     }
 
-
     public static synchronized WordsPool getInstance() {
         if (INSTANCE == null){
             INSTANCE = new WordsPool();
