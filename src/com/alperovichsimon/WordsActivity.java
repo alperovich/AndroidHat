@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
+import com.alperovichsimon.gamemodel.Word;
 import com.alperovichsimon.gamemodel.WordsPool;
 import com.alperovichsimon.logger.Logger;
 
@@ -162,7 +163,7 @@ public class WordsActivity extends Activity {
 
     private void addWords(WordsPool.Level level) {
         for (int i = 0; i != currentNumber; ++i) {
-            WordsPool.getInstance().addWord("", level);
+            WordsPool.getInstance().addWord(new Word(""), level);
         }
     }
 

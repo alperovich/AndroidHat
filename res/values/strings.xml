@@ -14,4 +14,7 @@
     <string name="easy_level_text">Легкие</string>
     <string name="add_words_text">Добавить</string>
     <string name="delete_words_text">Удалить все слова</string>
+    <string name="guessed_word_text">Слово угадано</string>
+    <string name="pop_word_text">Достать из шляпы</string>
+    <string name="push_word_text">Положить в шляпу</string>
 </resources>

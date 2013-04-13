@@ -12,10 +12,11 @@ import java.util.*;
 public class WordsPool {
     private static WordsPool INSTANCE;
 
-    private ArrayList<String> pool = new ArrayList<String>();
-    private Map<String, Boolean> guessed = new HashMap<String, Boolean>();
+    private ArrayList<Word> pool = new ArrayList<Word>();
+    private Map<Word, Boolean> guessed = new HashMap<Word, Boolean>();
     private List<Integer> indexes = new ArrayList<Integer>();
     private int curIndex = 0;
+    //TODO: все связанное со сложностью слов вынести в класс Word
     private int hard;
     private int medium;
     private int easy;
@@ -24,13 +25,13 @@ public class WordsPool {
 
     }
 
-    public void addWord(String word){
+    public void addWord(Word word){
         pool.add(word);
         guessed.put(word, false);
         indexes.add(pool.size());
     }
 
-    public void addWord(String word, Level level){
+    public void addWord(Word word, Level level){
         addWord(word);
         switch (level){
             case HARD:
@@ -56,7 +57,7 @@ public class WordsPool {
         return easy;
     }
 
-    public void wordGuessed(String word){
+    public void wordGuessed(Word word){
         if (!guessed.containsKey(word)){
             Logger.log("No such word: "+ word);
         }
@@ -68,7 +69,7 @@ public class WordsPool {
         curIndex = 0;
     }
 
-    public String getNextWord(){
+    public Word getNextWord(){
         int size = pool.size();
         while (!guessed.get(pool.get(indexes.get(curIndex))) && curIndex < size){
             ++curIndex;
@@ -92,7 +93,6 @@ public class WordsPool {
         medium = 0;
         easy = 0;
     }
-
 
     public static synchronized WordsPool getInstance() {
         if (INSTANCE == null){
