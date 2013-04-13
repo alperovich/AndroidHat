@@ -6,9 +6,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.alperovichsimon.gamemodel.Word;
 import com.alperovichsimon.gamemodel.WordsPool;
@@ -72,20 +70,17 @@ public class WordsActivity extends Activity {
     }
 
     private View.OnClickListener deleteListener() {
-        return new View.OnClickListener() {
+        return new MyOnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void doOnClick(View view) {
                 WordsPool.getInstance().deleteAll();
-                update();
             }
         };
     }
 
     private void update() {
         WordsPool pool = WordsPool.getInstance();
-        StringBuilder builder = new StringBuilder();
-        builder.append(currentNumber);
-        wordsText.setText(builder.toString());
+        updateWordsText();
 
         hardRadioButton.setText(getString(R.string.hard_level_text) + " " + pool.getHardNumber());
         mediumRadioButton.setText(getString(R.string.medium_level_text) + " " + pool.getMediumNumber());
@@ -94,26 +89,34 @@ public class WordsActivity extends Activity {
         wordsCounter.setText(getString(R.string.word_counter_text) + pool.getWordsNumber());
     }
 
+    private void updateWordsText() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(currentNumber);
+        wordsText.setText(builder.toString());
+    }
+
     private View.OnClickListener minusListener() {
-        return new MyOnClickListener() {
+        return new View.OnClickListener() {
             @Override
-            public void doOnClick(View view) {
-                if (currentNumber <= 0) {
+            public void onClick(View view) {
+                if (currentNumber <= 1) {
                     return;
                 }
                 --currentNumber;
+                updateWordsText();
             }
         };
     }
 
     private View.OnClickListener plusListener() {
-        return new MyOnClickListener() {
+        return new View.OnClickListener() {
             @Override
-            public void doOnClick(View view) {
+            public void onClick(View view) {
                 if (currentNumber >= MAX_WORDS_NUMBER) {
                     return;
                 }
                 ++currentNumber;
+                updateWordsText();
             }
         };
     }
@@ -134,7 +137,7 @@ public class WordsActivity extends Activity {
             public void afterTextChanged(Editable editable) {
                 try {
                     if (editable.toString().equals("")) {
-                        currentNumber = 0;
+                        currentNumber = 1;
                         return;
                     }
 
@@ -151,19 +154,23 @@ public class WordsActivity extends Activity {
             @Override
             public void doOnClick(View view) {
                 if (hardRadioButton.isChecked()) {
-                    addWords(WordsPool.Level.HARD);
+                    addWords(Word.Level.HARD);
                 } else if (mediumRadioButton.isChecked()) {
-                    addWords(WordsPool.Level.MEDIUM);
+                    addWords(Word.Level.MEDIUM);
                 } else if (easyRadioButton.isChecked()) {
-                    addWords(WordsPool.Level.EASY);
+                    addWords(Word.Level.EASY);
                 }
             }
         };
     }
 
-    private void addWords(WordsPool.Level level) {
+    private void addWords(Word.Level level) {
         for (int i = 0; i != currentNumber; ++i) {
-            WordsPool.getInstance().addWord(new Word(""), level);
+            if (i % 2 == 1) {
+                WordsPool.getInstance().addWord(new Word("shit", level));
+            } else {
+                WordsPool.getInstance().addWord(new Word("fuck", level));
+            }
         }
     }
 
@@ -185,10 +192,6 @@ public class WordsActivity extends Activity {
                 resultString.append(dest.toString().substring(0, dstart));
                 resultString.append(source.subSequence(start, end));
                 resultString.append(dest.toString().substring(dend, dest.length()));
-
-                if (resultString.toString().equals("")) {
-                    return null;
-                }
 
                 int result = Integer.parseInt(resultString.toString());
 

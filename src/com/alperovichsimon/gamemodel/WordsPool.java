@@ -13,97 +13,85 @@ public class WordsPool {
     private static WordsPool INSTANCE;
 
     private ArrayList<Word> pool = new ArrayList<Word>();
-    private Map<Word, Boolean> guessed = new HashMap<Word, Boolean>();
-    private List<Integer> indexes = new ArrayList<Integer>();
+
     private int curIndex = 0;
-    //TODO: все связанное со сложностью слов вынести в класс Word
-    private int hard;
-    private int medium;
-    private int easy;
+    private int notGuessedNumber = 0;
+
+    private int hardNumber;
+    private int mediumNumber;
+    private int easyNumber;
+
 
     private WordsPool() {
-
     }
 
-    public void addWord(Word word){
+    public void addWord(Word word) {
         pool.add(word);
-        guessed.put(word, false);
-        indexes.add(pool.size());
-    }
-
-    public void addWord(Word word, Level level){
-        addWord(word);
-        switch (level){
+        switch (word.getLevel()) {
             case HARD:
-                ++hard;
+                ++hardNumber;
                 break;
             case MEDIUM:
-                ++medium;
+                ++mediumNumber;
                 break;
             case EASY:
-                ++easy;
+                ++easyNumber;
         }
+        notGuessedNumber++;
     }
 
-    public int getHardNumber(){
-        return hard;
+
+    public int getHardNumber() {
+        return hardNumber;
     }
 
-    public int getMediumNumber(){
-        return medium;
+    public int getMediumNumber() {
+        return mediumNumber;
     }
 
-    public int getEasyNumber(){
-        return easy;
+    public int getEasyNumber() {
+        return easyNumber;
     }
 
-    public void wordGuessed(Word word){
-        if (!guessed.containsKey(word)){
-            Logger.log("No such word: "+ word);
+    public void wordGuessed() {
+        if (notGuessedNumber == 0) {
+            return;
         }
-        guessed.put(word, true);
+
+        Collections.swap(pool, curIndex, notGuessedNumber - 1);
+        notGuessedNumber--;
     }
 
-    public void shuffle(){
-        Collections.shuffle(indexes);
-        curIndex = 0;
-    }
 
-    public Word getNextWord(){
-        int size = pool.size();
-        while (!guessed.get(pool.get(indexes.get(curIndex))) && curIndex < size){
-            ++curIndex;
-        }
-        if (curIndex >= size){
+    //null if all words have been guessed
+    public Word getNextWord() {
+        if (notGuessedNumber == 0) {
             return null;
         }
-        return pool.get(indexes.get(curIndex));
+        curIndex = new Random().nextInt(notGuessedNumber);
+        return pool.get(curIndex);
     }
 
-    public int getWordsNumber(){
+    public int getWordsNumber() {
         return pool.size();
     }
 
     public void deleteAll() {
         pool.clear();
-        guessed.clear();
-        indexes.clear();
+
+        hardNumber = 0;
+        mediumNumber = 0;
+        easyNumber = 0;
+
         curIndex = 0;
-        hard = 0;
-        medium = 0;
-        easy = 0;
+        notGuessedNumber = 0;
     }
 
     public static synchronized WordsPool getInstance() {
-        if (INSTANCE == null){
+        if (INSTANCE == null) {
             INSTANCE = new WordsPool();
         }
         return INSTANCE;
     }
 
-    public enum Level{
-        HARD,
-        MEDIUM,
-        EASY
-    }
 }

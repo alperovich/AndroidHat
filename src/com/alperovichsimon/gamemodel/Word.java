@@ -8,15 +8,35 @@ package com.alperovichsimon.gamemodel;
  * To change this template use File | Settings | File Templates.
  */
 public class Word {
-    private String _word;
+    private String value;
+    private Level level;
+
 
     public Word(String value)
     {
-        _word = value;
-    };
+        this.value = value;
+        this.level = Level.EASY;
+    }
 
-    public String getWord()
+    public Word(String value, Level level)
     {
-        return _word;
+        this.value = value;
+        this.level = level;
+    }
+
+    public String getValue()
+    {
+        return value;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+
+    public enum Level{
+        HARD,
+        MEDIUM,
+        EASY
     }
 }

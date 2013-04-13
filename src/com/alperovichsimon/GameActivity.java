@@ -11,10 +11,6 @@ import com.alperovichsimon.gamemodel.TeamPool;
 import com.alperovichsimon.gamemodel.Word;
 import com.alperovichsimon.gamemodel.WordsPool;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: MustDie
@@ -62,8 +58,6 @@ public class GameActivity extends Activity {
         Team b = new Team("gei");
         b.addPlayer("alperovich");
 
-        Word first = new Word("hui");
-        WordsPool.getInstance().addWord(first);
         TeamPool.getInstance().addTeam(a);
         TeamPool.getInstance().addTeam(b);
     }
@@ -73,7 +67,12 @@ public class GameActivity extends Activity {
         isPlaying = true;
         currentWord  = WordsPool.getInstance().getNextWord();
 
-        currentWordLabel.setText(currentWord.getWord());
+        if (currentWord == null) {
+            currentWordLabel.setText("Игра окончена! Идите нахуй!");
+            return;
+        }
+
+        currentWordLabel.setText(currentWord.getValue());
         popWordButton.setEnabled(false);
         pushWordButton.setEnabled(true);
         guessedWordButton.setEnabled(true);
@@ -92,12 +91,12 @@ public class GameActivity extends Activity {
 
     public void GuessedWordButtonClick (View view)
     {
-        WordsPool.getInstance().wordGuessed(currentWord);
-        currentTeamPlaying.addGuessedWord(currentWord);
+        WordsPool.getInstance().wordGuessed();
+        //currentTeamPlaying.addGuessedWord(currentWord);
 
         currentWord  = WordsPool.getInstance().getNextWord();
         if (currentWord != null)
-            currentWordLabel.setText(currentWord.getWord());
+            currentWordLabel.setText(currentWord.getValue());
         else
         {
             stopTimer();
