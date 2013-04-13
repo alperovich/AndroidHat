@@ -1,13 +1,12 @@
 package com.alperovichsimon;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.alperovichsimon.gamemodel.PlayersPool;
+import com.alperovichsimon.gamemodel.TeamPool;
 import com.alperovichsimon.gamemodel.WordsPool;
 
 public class MainActivity extends Activity {
@@ -46,7 +45,7 @@ public class MainActivity extends Activity {
 
     private void update() {
         wordsCounter.setText(getString(R.string.word_counter_text) + " " + WordsPool.getInstance().getWordsNumber());
-        playersCounter.setText(getString(R.string.player_counter_text) + " " + PlayersPool.getInstance().getPlayersNumber());
+        playersCounter.setText(getString(R.string.player_counter_text) + " " + TeamPool.getInstance().getTeamsNumber());
     }
 
     public void newGameButtonClick(View view)

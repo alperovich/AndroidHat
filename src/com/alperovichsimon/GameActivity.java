@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.alperovichsimon.gamemodel.Team;
+import com.alperovichsimon.gamemodel.TeamPool;
 import com.alperovichsimon.gamemodel.Word;
 import com.alperovichsimon.gamemodel.WordsPool;
 
@@ -22,9 +23,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GameActivity extends Activity {
-    private List<Team>  _teams = new ArrayList<Team>();
-    private LinkedList<Word> _words = new LinkedList<Word>();
-
     private Button guessedWordButton;
     private Button popWordButton;
     private Button pushWordButton;
@@ -37,14 +35,13 @@ public class GameActivity extends Activity {
     private Team currentTeamPlaying;
     private Word currentWord;
     private boolean isPlaying;
+    private int roundNumber = 1;
     //TODO: extract to another class
     private int roundLength = 15;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
-
-
 
         guessedWordButton = (Button) findViewById(R.id.guessed_word_button);
         popWordButton = (Button) findViewById(R.id.pop_word_button);
@@ -60,23 +57,21 @@ public class GameActivity extends Activity {
 
     private void Initialize ()
     {
-        Team a = new Team();
+        Team a = new Team("pidorki");
         a.addPlayer("nazarov");
-        Team b = new Team();
+        Team b = new Team("gei");
         b.addPlayer("alperovich");
 
         Word first = new Word("hui");
-        _words.add(first);
-        _teams.add(a);
-        _teams.add(b);
-        currentTeamPlaying = a;
+        WordsPool.getInstance().addWord(first);
+        TeamPool.getInstance().addTeam(a);
+        TeamPool.getInstance().addTeam(b);
     }
 
     public void PopWordFromHat (View view)
     {
-        currentWord = _words.get(_words.size() - 1);
-        String word  = WordsPool.getInstance().getNextWord();
-
+        isPlaying = true;
+        currentWord  = WordsPool.getInstance().getNextWord();
 
         currentWordLabel.setText(currentWord.getWord());
         popWordButton.setEnabled(false);
@@ -93,6 +88,21 @@ public class GameActivity extends Activity {
         popWordButton.setEnabled(true);
         pushWordButton.setEnabled(false);
         guessedWordButton.setEnabled(false);
+    }
+
+    public void GuessedWordButtonClick (View view)
+    {
+        WordsPool.getInstance().wordGuessed(currentWord);
+        currentTeamPlaying.addGuessedWord(currentWord);
+
+        currentWord  = WordsPool.getInstance().getNextWord();
+        if (currentWord != null)
+            currentWordLabel.setText(currentWord.getWord());
+        else
+        {
+            stopTimer();
+            currentWordLabel.setText("Game over!");
+        }
     }
 
     public void startTimer() {

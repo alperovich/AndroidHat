@@ -13,9 +13,11 @@ import java.util.List;
 public class Team {
     private List<String> _players = new ArrayList<String>();
     private List<Word> _guessedWords = new ArrayList<Word>();
+    private String _name;
 
-    public Team ()
+    public Team (String name)
     {
+        _name = name;
     }
 
     public void addPlayer (String playerName)

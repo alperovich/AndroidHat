@@ -9,38 +9,42 @@ import java.util.*;
  * Date: 27.09.12
  * Time: 2:30
  */
-public class PlayersPool {
-    private static PlayersPool INSTANCE;
+public class TeamPool {
+    private static TeamPool INSTANCE;
 
-    private Map<Player, Integer> guessedNumber = new LinkedHashMap<Player, Integer>();
-    private List<Player> pool = new ArrayList<Player>();
+    private Map<Team, Integer> guessedNumber = new LinkedHashMap<Team, Integer>();
+    private List<Team> pool = new ArrayList<Team>();
 
+    public Team getNextTeamPlaying(int number)
+    {
+        return pool.get( (number - 1 ) % pool.size());
+    }
 
-    private PlayersPool() {
+    private TeamPool() {
 
     }
 
-    public static synchronized PlayersPool getInstance() {
+    public static synchronized TeamPool getInstance() {
         if (INSTANCE == null){
-            INSTANCE  = new PlayersPool();
+            INSTANCE  = new TeamPool();
         }
         return INSTANCE;
     }
 
-    public void addPlayer(Player player) {
-        pool.add(player);
-        guessedNumber.put(player, 0);
+    public void addTeam(Team team) {
+        pool.add(team);
+        guessedNumber.put(team, 0);
     }
 
-    public List<Player> getPool(){
+    public List<Team> getPool(){
         return pool;
     }
 
-    public void playerGuessedWord(Player player) {
-        if (!guessedNumber.containsKey(player)) {
-            Logger.log("no such player: " + player + "in pool");
+   /* public void playerGuessedWord(Team team) {
+        if (!guessedNumber.containsKey(team)) {
+            Logger.log("no such player: " + team + "in pool");
         }
-        guessedNumber.put(player, guessedNumber.get(player) + 1);
+        guessedNumber.put(team, guessedNumber.get(team) + 1);
     }
 
     public int getNumberOfGuessedWords(Player player) {
@@ -49,9 +53,9 @@ public class PlayersPool {
             return 0;
         }
         return guessedNumber.get(player);
-    }
+    }                  */
 
-    public int getPlayersNumber(){
+    public int getTeamsNumber(){
         return pool.size();
     }
 
