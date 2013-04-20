@@ -1,7 +1,5 @@
 package com.alperovichsimon.gamemodel;
 
-import com.alperovichsimon.logger.Logger;
-
 import java.util.*;
 
 /**

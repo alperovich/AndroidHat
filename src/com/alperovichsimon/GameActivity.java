@@ -9,10 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import com.alperovichsimon.gamemodel.Team;
-import com.alperovichsimon.gamemodel.TeamPool;
-import com.alperovichsimon.gamemodel.Word;
-import com.alperovichsimon.gamemodel.WordsPool;
+import com.alperovichsimon.gamemodel.*;
 
 
 /**
@@ -116,9 +113,9 @@ public class GameActivity extends Activity   {
     private void initialize()
     {
         Team a = new Team("pidorki");
-        a.addPlayer("nazarov");
+        a.addPlayer(new Player("nazarov"));
         Team b = new Team("gei");
-        b.addPlayer("alperovich");
+        b.addPlayer(new Player("alperovich"));
 
         TeamPool.getInstance().addTeam(a);
         TeamPool.getInstance().addTeam(b);

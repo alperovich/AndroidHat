@@ -6,11 +6,12 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.alperovichsimon.gamemodel.Word;
 import com.alperovichsimon.gamemodel.WordsPool;
-import com.alperovichsimon.logger.Logger;
+
 
 
 /**
@@ -31,6 +32,7 @@ public class WordsActivity extends Activity {
     private final int DEFAULT_WORDS_NUMBER = 10;
     private final int MAX_WORDS_NUMBER = 10000;
     private int currentNumber = DEFAULT_WORDS_NUMBER;
+    private static final String TAG = "WordsActivity";
     private Button deleteButton;
 
     @Override
@@ -143,7 +145,7 @@ public class WordsActivity extends Activity {
 
                     currentNumber = Integer.parseInt(editable.toString());
                 } catch (NumberFormatException e) {
-                    Logger.log(e.getMessage());
+                    Log.d(TAG, "words filter doesn't work", e);
                 }
             }
         };
