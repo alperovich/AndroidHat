@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.*;
 import com.alperovichsimon.gamemodel.Word;
 import com.alperovichsimon.gamemodel.WordsPool;
-
+import com.alperovichsimon.persistence.WordsPersistenceManager;
 
 
 /**
@@ -28,6 +28,7 @@ public class WordsActivity extends Activity {
     private RadioButton mediumRadioButton;
     private RadioButton easyRadioButton;
     private TextView wordsCounter;
+    private TextView wordsError;
 
     private final int DEFAULT_WORDS_NUMBER = 10;
     private final int MAX_WORDS_NUMBER = 10000;
@@ -47,6 +48,7 @@ public class WordsActivity extends Activity {
         easyRadioButton = (RadioButton) findViewById(R.id.easy_level_button);
         deleteButton = (Button) findViewById(R.id.delete_words_button);
         wordsCounter = (TextView) findViewById(R.id.word_counter_text);
+        wordsError = (TextView) findViewById(R.id.word_error_text);
         prepare();
         update();
     }
@@ -54,8 +56,7 @@ public class WordsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words);
-
-
+        WordsPersistenceManager.getInstance().loadWords(getApplicationContext().getAssets());
     }
 
 
@@ -75,6 +76,7 @@ public class WordsActivity extends Activity {
         return new MyOnClickListener() {
             @Override
             public void doOnClick(View view) {
+                WordsPersistenceManager.getInstance().shuffle();
                 WordsPool.getInstance().deleteAll();
             }
         };
@@ -168,11 +170,12 @@ public class WordsActivity extends Activity {
 
     private void addWords(Word.Level level) {
         for (int i = 0; i != currentNumber; ++i) {
-            if (i % 2 == 1) {
-                WordsPool.getInstance().addWord(new Word("shit", level));
-            } else {
-                WordsPool.getInstance().addWord(new Word("fuck", level));
+            String nextWord = WordsPersistenceManager.getInstance().getNextWord(level);
+            if (nextWord == null) {
+                wordsError.setText("В базе больше нет слов такой сложности");
+                return;
             }
+            WordsPool.getInstance().addWord(new Word(nextWord, level));
         }
     }
 
