@@ -119,11 +119,6 @@ public class GameActivity extends Activity   {
 
         TeamPool.getInstance().addTeam(a);
         TeamPool.getInstance().addTeam(b);
-
-        Word word1 = new Word("ololo");
-        Word word2 = new Word("ahahha");
-        WordsPool.getInstance().addWord(word1);
-        WordsPool.getInstance().addWord(word2);
     }
 
     private void popWord()
