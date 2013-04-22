@@ -127,6 +127,7 @@ public class GameActivity extends Activity   {
 
         if (currentWord == null) {
             finishGame();
+            return;
         }
 
         currentWordLabel.setText(currentWord.getValue());
