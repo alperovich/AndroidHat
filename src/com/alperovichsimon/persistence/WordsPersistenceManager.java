@@ -79,6 +79,27 @@ public class WordsPersistenceManager {
         }
     }
 
+    public int getEasyNumber(){
+        if (!loaded) {
+            return 0;
+        }
+        return easyNotAdd;
+    }
+
+    public int getMediumNumber(){
+        if (!loaded) {
+            return 0;
+        }
+        return mediumNotAdd;
+    }
+
+    public int getHardNumber(){
+        if (!loaded) {
+            return 0;
+        }
+        return hardNotAdd;
+    }
+
     public String getNextWord(Word.Level level) {
         if (!loaded) {
             return null;
@@ -113,8 +134,12 @@ public class WordsPersistenceManager {
     }
 
     private class MyDefaultHandler extends DefaultHandler {
+        private boolean addWords;
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+            if (qName.equals("word")){
+                addWords = true;
+            }
             if (qName.equals("hard")) {
                 currentArray = hardWords;
             } else if (qName.equals("medium")) {
@@ -124,8 +149,22 @@ public class WordsPersistenceManager {
             }
         }
 
+        public void endElement(String uri, String localName, String qName) throws SAXException {
+            if (qName.equals("word")){
+                addWords = false;
+            }
+            if (qName.equals("hard")) {
+                currentArray = null;
+            } else if (qName.equals("medium")) {
+                currentArray = null;
+            } else if (qName.equals("easy")) {
+                currentArray = null;
+            }
+        }
+
         @Override
         public void characters(char[] ch, int start, int length) throws SAXException {
+            if (currentArray != null && addWords)
             currentArray.add(new String(ch, start, length));
         }
 

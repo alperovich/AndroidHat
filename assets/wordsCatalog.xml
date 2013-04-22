@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <words>
     <hard>
-        Волокно
-        Сукно
+        <word>Волокно</word>
+        <word>Сукно</word>
     </hard>
     <medium>
-        Вагина
-        Член
-        Идиот
+        <word>Вагина</word>
+        <word>Член</word>
+        <word>Идиот</word>
     </medium>
     <easy>
-        Скатерть
-        Чайник
-        Петька
-        Васька
+        <word>Скатерть</word>
+        <word>Чайник</word>
+        <word>Петька</word>
+        <word>Васька</word>
     </easy>
 </words>

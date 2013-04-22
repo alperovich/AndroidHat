@@ -27,14 +27,15 @@ public class WordsActivity extends Activity {
     private RadioButton hardRadioButton;
     private RadioButton mediumRadioButton;
     private RadioButton easyRadioButton;
+    private RadioGroup levelRadioGroup;
     private TextView wordsCounter;
     private TextView wordsError;
+    private Button deleteButton;
 
     private final int DEFAULT_WORDS_NUMBER = 10;
     private final int MAX_WORDS_NUMBER = 10000;
     private int currentNumber = DEFAULT_WORDS_NUMBER;
     private static final String TAG = "WordsActivity";
-    private Button deleteButton;
 
     @Override
     protected void onStart() {
@@ -46,6 +47,7 @@ public class WordsActivity extends Activity {
         hardRadioButton = (RadioButton) findViewById(R.id.hard_level_button);
         mediumRadioButton = (RadioButton) findViewById(R.id.medium_level_button);
         easyRadioButton = (RadioButton) findViewById(R.id.easy_level_button);
+        levelRadioGroup = (RadioGroup) findViewById(R.id.words_level_group);
         deleteButton = (Button) findViewById(R.id.delete_words_button);
         wordsCounter = (TextView) findViewById(R.id.word_counter_text);
         wordsError = (TextView) findViewById(R.id.word_error_text);
@@ -70,6 +72,13 @@ public class WordsActivity extends Activity {
         wordsText.addTextChangedListener(numberWatcher());
         addButton.setOnClickListener(addButtonListener());
         deleteButton.setOnClickListener(deleteListener());
+
+        levelRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                updateErrorText();
+            }
+        });
     }
 
     private View.OnClickListener deleteListener() {
@@ -91,6 +100,31 @@ public class WordsActivity extends Activity {
         easyRadioButton.setText(getString(R.string.easy_level_text) + " " + pool.getEasyNumber());
 
         wordsCounter.setText(getString(R.string.word_counter_text) + pool.getWordsNumber());
+
+        updateErrorText();
+    }
+
+    private void updateErrorText() {
+        boolean showError = false;
+        String levelName = null;
+        if (hardRadioButton.isChecked() && WordsPersistenceManager.getInstance().getHardNumber() == 0) {
+            levelName = "сложных";
+            showError = true;
+        } else if (mediumRadioButton.isChecked() && WordsPersistenceManager.getInstance().getMediumNumber() == 0) {
+            levelName = "средних";
+            showError = true;
+        } else if (easyRadioButton.isChecked() && WordsPersistenceManager.getInstance().getEasyNumber() == 0) {
+            levelName = "легких";
+            showError = true;
+        }
+        if (showError) {
+            StringBuilder builder = new StringBuilder("В базе больше нет ");
+            builder.append(levelName);
+            builder.append(" слов");
+            wordsError.setText(builder.toString());
+        } else {
+            wordsError.setText("");
+        }
     }
 
     private void updateWordsText() {
@@ -172,7 +206,6 @@ public class WordsActivity extends Activity {
         for (int i = 0; i != currentNumber; ++i) {
             String nextWord = WordsPersistenceManager.getInstance().getNextWord(level);
             if (nextWord == null) {
-                wordsError.setText("В базе больше нет слов такой сложности");
                 return;
             }
             WordsPool.getInstance().addWord(new Word(nextWord, level));
