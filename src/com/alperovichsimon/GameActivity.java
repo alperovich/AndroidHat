@@ -3,6 +3,7 @@ package com.alperovichsimon;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.GestureDetector;
@@ -73,7 +74,7 @@ public class GameActivity extends Activity {
             if ((e1.getY() - e2.getY()) > sensitvity) {
                 handlePopWord();
             } else if ((e2.getY() - e1.getY()) > sensitvity) {
-                finishRound();
+                handlePushWord();
             }
 
             return true;
@@ -102,19 +103,23 @@ public class GameActivity extends Activity {
     }
 
     private void finishRound() {
-        stopTimer();
         roundNumber++;
         isPlaying = false;
         currentTeamPlaying.roundFinished();
-        update();
         dialog("Раунд закончен, а тем временем хуи сосут " + currentTeamPlaying.teamNames());
+        update();
     }
 
     private void finishGame() {
         stopTimer();
-        dialog("Игра окончена, идите нахуй!");
-        //Intent intent = new Intent(GameActivity.this, StatsActivity.class);
-        //GameActivity.this.startActivity(intent);
+        dialog("Игра окончена, идите нахуй!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Intent intent = new Intent(GameActivity.this, StatsActivity.class);
+                GameActivity.this.startActivity(intent);
+            }
+        });
     }
 
     private void initialize() {
@@ -136,15 +141,19 @@ public class GameActivity extends Activity {
 
 
     private void dialog(String message) {
-        AlertDialog ad = new AlertDialog.Builder(this).create();
-        ad.setCancelable(false); // This blocks the 'BACK' button
-        ad.setMessage(message);
-        ad.setButton("OK", new DialogInterface.OnClickListener() {
+        dialog(message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void dialog(String message, DialogInterface.OnClickListener listener) {
+        AlertDialog ad = new AlertDialog.Builder(this).create();
+        ad.setCancelable(false); // This blocks the 'BACK' button
+        ad.setMessage(message);
+        ad.setButton("OK", listener);
         ad.show();
     }
 
@@ -187,8 +196,13 @@ public class GameActivity extends Activity {
          handlePopWord();
     }
 
-    public void pushWordButtonCli5ck(View view) {
+    public void pushWordButtonClick(View view) {
+        handlePushWord();
+    }
+
+    private void handlePushWord() {
         finishRound();
+        stopTimer();
     }
 
     public void startTimer() {
