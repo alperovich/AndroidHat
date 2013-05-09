@@ -18,6 +18,7 @@ public class WordsPool {
     private int hardNumber;
     private int mediumNumber;
     private int easyNumber;
+    private Word currentWord;
 
 
     private WordsPool() {
@@ -58,11 +59,19 @@ public class WordsPool {
 
         Collections.swap(pool, curIndex, notGuessedNumber - 1);
         notGuessedNumber--;
+        currentWord = cacheNextWord();
     }
-
 
     //null if all words have been guessed
     public Word getNextWord() {
+        if (currentWord == null) {
+            currentWord = cacheNextWord();
+        }
+        return currentWord;
+    }
+
+
+    public Word cacheNextWord() {
         if (notGuessedNumber == 0) {
             return null;
         }

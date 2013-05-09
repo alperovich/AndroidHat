@@ -121,6 +121,7 @@ public class WordsPersistenceManager {
         int curIndex = new Random().nextInt(curNotAdd);
 
 
+        String result = currentArray.get(curIndex);
         Collections.swap(currentArray, curIndex, curNotAdd - 1);
         if (level == Word.Level.HARD) {
             hardNotAdd --;
@@ -130,7 +131,7 @@ public class WordsPersistenceManager {
         } else if (level == Word.Level.EASY) {
             easyNotAdd--;
         }
-        return currentArray.get(curIndex);
+        return result;
     }
 
     private class MyDefaultHandler extends DefaultHandler {
