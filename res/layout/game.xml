@@ -17,7 +17,6 @@
                 android:id="@+id/timer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00"
                 android:textSize="28pt"
                 android:padding="10dip" android:layout_gravity="center" android:textColor="#ffff00"/>
         <TextView
@@ -28,19 +27,21 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" android:layout_marginTop="-4dp">
+            android:layout_height="0dp"
+            android:layout_weight="1">
         <TextView
                 android:id="@+id/current_word"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text=""
                 android:textSize="40dip"
-                android:padding="10dip" android:layout_marginLeft="106dp"/>
+                android:layout_gravity="center"/>
     </LinearLayout>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
         <Button
                 android:id="@+id/pop_word_button"
