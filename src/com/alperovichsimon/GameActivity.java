@@ -11,10 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import com.alperovichsimon.gamemodel.Team;
-import com.alperovichsimon.gamemodel.TeamPool;
-import com.alperovichsimon.gamemodel.Word;
-import com.alperovichsimon.gamemodel.WordsPool;
+import com.alperovichsimon.gamemodel.*;
 
 
 /**
@@ -34,14 +31,36 @@ public class GameActivity extends Activity   {
     private TextView currentWordLabel;
 
 
-    private CountDownTimer _roundTimer;
+    private CountDownTimer roundTimer;
 
     private Team currentTeamPlaying;
     private Word currentWord;
     private boolean isPlaying;
     private int roundNumber = 1;
     //TODO: extract to another class
-    private int roundLength = 15;
+    private final int roundLength = 15;
+
+    private GestureDetector.SimpleOnGestureListener simpleOnGestureListener
+            = new GestureDetector.SimpleOnGestureListener(){
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                               float velocityY) {
+
+            float sensitvity = 50;
+            if((e1.getY() - e2.getY()) > sensitvity){
+                popWord();
+            }else if((e2.getY() - e1.getY()) > sensitvity){
+                finishRound();
+            }
+
+            return true;
+        }
+
+    };
+
+    private GestureDetector gestureDetector
+            = new GestureDetector(simpleOnGestureListener);
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +75,7 @@ public class GameActivity extends Activity   {
         pushWordButton.setEnabled(false);
         guessedWordButton.setEnabled(false);
 
-        Initialize();
+        initialize();
     }
 
     @Override
@@ -65,51 +84,17 @@ public class GameActivity extends Activity   {
         return gestureDetector.onTouchEvent(event);
     }
 
-    GestureDetector.SimpleOnGestureListener simpleOnGestureListener
-            = new GestureDetector.SimpleOnGestureListener(){
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-                               float velocityY) {
-
-            float sensitvity = 50;
-            if((e1.getY() - e2.getY()) > sensitvity){
-                      popWord();
-            }else if((e2.getY() - e1.getY()) > sensitvity){
-                FinishRound();
-            }
-
-            return true;
-        }
-
-    };
-
-    GestureDetector gestureDetector
-            = new GestureDetector(simpleOnGestureListener);
-
-    private void Dialog(String message)
-    {
-        AlertDialog ad = new AlertDialog.Builder(this).create();
-        ad.setCancelable(false); // This blocks the 'BACK' button
-        ad.setMessage(message);
-        ad.setButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        ad.show();
-    }
 
 
-    private void StartRound()
+
+    private void startRound()
     {
         isPlaying = true;
         popWord();
         startTimer();
     }
 
-    private void FinishRound()
+    private void finishRound()
     {
         stopTimer();
         currentWordLabel.setText("");
@@ -123,34 +108,45 @@ public class GameActivity extends Activity   {
         Dialog("А сейчас хуи сосут " + currentTeamPlaying );
     }
 
-    private void FinishGame()
+    private void finishGame()
     {
         stopTimer();
         currentWordLabel.setText("Игра окончена! Идите нахуй!");
     }
 
-    private void Initialize ()
+    private void initialize()
     {
         Team a = new Team("pidorki");
-        a.addPlayer("nazarov");
+        a.addPlayer(new Player("nazarov"));
         Team b = new Team("gei");
-        b.addPlayer("alperovich");
+        b.addPlayer(new Player("alperovich"));
 
         TeamPool.getInstance().addTeam(a);
         TeamPool.getInstance().addTeam(b);
-
-        Word word1 = new Word("ololo");
-        Word word2 = new Word("ahahha");
-        WordsPool.getInstance().addWord(word1);
-        WordsPool.getInstance().addWord(word2);
     }
 
+
+        private void Dialog(String message)
+        {
+            AlertDialog ad = new AlertDialog.Builder(this).create();
+            ad.setCancelable(false); // This blocks the 'BACK' button
+            ad.setMessage(message);
+            ad.setButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            ad.show();
+        }
+        
     private void popWord()
     {
         currentWord  = WordsPool.getInstance().getNextWord();
 
         if (currentWord == null) {
-            FinishGame();
+            finishGame();
+            return;
         }
 
         currentWordLabel.setText(currentWord.getValue());
@@ -159,17 +155,17 @@ public class GameActivity extends Activity   {
         guessedWordButton.setEnabled(true);
     }
 
-    public void PopWordFromHat (View view)
+    public void popWordFromHat(View view)
     {
-        StartRound();
+        startRound();
     }
 
-    public void PushWordButtonClick (View view)
+    public void pushWordButtonClick(View view)
     {
-        FinishRound();
+        finishRound();
     }
 
-    public void GuessedWordButtonClick (View view)
+    public void guessedWordButtonClick(View view)
     {
         WordsPool.getInstance().wordGuessed();
         //currentTeamPlaying.addGuessedWord(currentWord);
@@ -179,12 +175,12 @@ public class GameActivity extends Activity   {
             currentWordLabel.setText(currentWord.getValue());
         else
         {
-            FinishGame();
+            finishGame();
         }
     }
 
     public void startTimer() {
-        _roundTimer = new CountDownTimer(roundLength * 1000, 1000) {
+        roundTimer = new CountDownTimer(roundLength * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timerLabel.setText(String.valueOf(millisUntilFinished / 1000) + "s");
@@ -193,17 +189,17 @@ public class GameActivity extends Activity   {
             @Override
             public void onFinish() {
                 timerLabel.setText("Раунд закончен!");
-                FinishRound();
+                finishRound();
             }
         };
         timerLabel.setText(roundLength + "s");
-        _roundTimer.start();
+        roundTimer.start();
         isPlaying = true;
     }
 
     public void stopTimer() {
-        if(_roundTimer != null)
-            _roundTimer.cancel();
+        if(roundTimer != null)
+            roundTimer.cancel();
         timerLabel.setText("Раунд закончен!");
         isPlaying = false;
     }

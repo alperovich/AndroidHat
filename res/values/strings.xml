@@ -13,6 +13,7 @@
     <string name="medium_level_text">Средние</string>
     <string name="easy_level_text">Легкие</string>
     <string name="add_words_text">Добавить</string>
+    <string name="word_error_text"></string>
     <string name="delete_words_text">Удалить все слова</string>
     <string name="guessed_word_text">Слово угадано</string>
     <string name="pop_word_text">Достать из шляпы</string>

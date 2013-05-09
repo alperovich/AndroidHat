@@ -6,11 +6,12 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.alperovichsimon.gamemodel.Word;
 import com.alperovichsimon.gamemodel.WordsPool;
-import com.alperovichsimon.logger.Logger;
+import com.alperovichsimon.persistence.WordsPersistenceManager;
 
 
 /**
@@ -26,12 +27,15 @@ public class WordsActivity extends Activity {
     private RadioButton hardRadioButton;
     private RadioButton mediumRadioButton;
     private RadioButton easyRadioButton;
+    private RadioGroup levelRadioGroup;
     private TextView wordsCounter;
+    private TextView wordsError;
+    private Button deleteButton;
 
     private final int DEFAULT_WORDS_NUMBER = 10;
     private final int MAX_WORDS_NUMBER = 10000;
     private int currentNumber = DEFAULT_WORDS_NUMBER;
-    private Button deleteButton;
+    private static final String TAG = "WordsActivity";
 
     @Override
     protected void onStart() {
@@ -43,8 +47,10 @@ public class WordsActivity extends Activity {
         hardRadioButton = (RadioButton) findViewById(R.id.hard_level_button);
         mediumRadioButton = (RadioButton) findViewById(R.id.medium_level_button);
         easyRadioButton = (RadioButton) findViewById(R.id.easy_level_button);
+        levelRadioGroup = (RadioGroup) findViewById(R.id.words_level_group);
         deleteButton = (Button) findViewById(R.id.delete_words_button);
         wordsCounter = (TextView) findViewById(R.id.word_counter_text);
+        wordsError = (TextView) findViewById(R.id.word_error_text);
         prepare();
         update();
     }
@@ -52,8 +58,7 @@ public class WordsActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words);
-
-
+        WordsPersistenceManager.getInstance().loadWords(getApplicationContext().getAssets());
     }
 
 
@@ -67,12 +72,20 @@ public class WordsActivity extends Activity {
         wordsText.addTextChangedListener(numberWatcher());
         addButton.setOnClickListener(addButtonListener());
         deleteButton.setOnClickListener(deleteListener());
+
+        levelRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                updateErrorText();
+            }
+        });
     }
 
     private View.OnClickListener deleteListener() {
         return new MyOnClickListener() {
             @Override
             public void doOnClick(View view) {
+                WordsPersistenceManager.getInstance().shuffle();
                 WordsPool.getInstance().deleteAll();
             }
         };
@@ -87,6 +100,31 @@ public class WordsActivity extends Activity {
         easyRadioButton.setText(getString(R.string.easy_level_text) + " " + pool.getEasyNumber());
 
         wordsCounter.setText(getString(R.string.word_counter_text) + pool.getWordsNumber());
+
+        updateErrorText();
+    }
+
+    private void updateErrorText() {
+        boolean showError = false;
+        String levelName = null;
+        if (hardRadioButton.isChecked() && WordsPersistenceManager.getInstance().getHardNumber() == 0) {
+            levelName = "сложных";
+            showError = true;
+        } else if (mediumRadioButton.isChecked() && WordsPersistenceManager.getInstance().getMediumNumber() == 0) {
+            levelName = "средних";
+            showError = true;
+        } else if (easyRadioButton.isChecked() && WordsPersistenceManager.getInstance().getEasyNumber() == 0) {
+            levelName = "легких";
+            showError = true;
+        }
+        if (showError) {
+            StringBuilder builder = new StringBuilder("В базе больше нет ");
+            builder.append(levelName);
+            builder.append(" слов");
+            wordsError.setText(builder.toString());
+        } else {
+            wordsError.setText("");
+        }
     }
 
     private void updateWordsText() {
@@ -143,7 +181,7 @@ public class WordsActivity extends Activity {
 
                     currentNumber = Integer.parseInt(editable.toString());
                 } catch (NumberFormatException e) {
-                    Logger.log(e.getMessage());
+                    Log.d(TAG, "words filter doesn't work", e);
                 }
             }
         };
@@ -166,11 +204,11 @@ public class WordsActivity extends Activity {
 
     private void addWords(Word.Level level) {
         for (int i = 0; i != currentNumber; ++i) {
-            if (i % 2 == 1) {
-                WordsPool.getInstance().addWord(new Word("shit", level));
-            } else {
-                WordsPool.getInstance().addWord(new Word("fuck", level));
+            String nextWord = WordsPersistenceManager.getInstance().getNextWord(level);
+            if (nextWord == null) {
+                return;
             }
+            WordsPool.getInstance().addWord(new Word(nextWord, level));
         }
     }
 

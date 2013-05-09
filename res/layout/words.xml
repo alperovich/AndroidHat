@@ -59,6 +59,14 @@
             android:layout_weight="1"
             android:text="@string/add_words_text"/>
     <TextView
+            android:id="@+id/word_error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:text="@string/word_error_text"
+            android:textSize="8pt"
+            />
+    <TextView
             android:id="@id/word_counter_text"
             android:layout_width="wrap_content"
             android:layout_height="0dip"
