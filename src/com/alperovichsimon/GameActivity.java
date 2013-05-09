@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.GestureDetector;
@@ -23,14 +25,15 @@ import com.alperovichsimon.gamemodel.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GameActivity extends Activity {
-
-    ViewFlipper page;
     private Button popWordButton;
     private Button pushWordButton;
     private TextView timerLabel;
     private TextView textInfo;
     private TextView currentWordLabel;
 
+    private SoundPool soundPool;
+    boolean loaded = false;
+    private int soundID;
 
     private CountDownTimer roundTimer;
 
@@ -52,6 +55,15 @@ public class GameActivity extends Activity {
         textInfo = (TextView) findViewById(R.id.textInfo);
 
 
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId,int status) {
+                loaded = true;
+            }
+        });
+        soundID = soundPool.load(this, R.raw.sound1, 1);
 
         initialize();
         update();
@@ -215,6 +227,7 @@ public class GameActivity extends Activity {
             @Override
             public void onFinish() {
                 finishRound();
+                playSound();
             }
         };
         timerLabel.setText(roundLength + "s");
@@ -227,4 +240,19 @@ public class GameActivity extends Activity {
             roundTimer.cancel();
         isPlaying = false;
     }
+
+    private void playSound(){
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        float actualVolume = (float) audioManager
+                .getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float volume = actualVolume / maxVolume;
+        // Is the sound loaded already?
+        if (loaded) {
+            soundPool.play(soundID, volume, volume, 1, 0, 1f);
+        }
+    }
+
+
 }
