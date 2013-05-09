@@ -59,25 +59,17 @@ public class WordsPool {
 
         Collections.swap(pool, curIndex, notGuessedNumber - 1);
         notGuessedNumber--;
-        currentWord = cacheNextWord();
     }
 
     //null if all words have been guessed
     public Word getNextWord() {
-        if (currentWord == null) {
-            currentWord = cacheNextWord();
-        }
-        return currentWord;
-    }
-
-
-    public Word cacheNextWord() {
         if (notGuessedNumber == 0) {
             return null;
         }
         curIndex = new Random().nextInt(notGuessedNumber);
         return pool.get(curIndex);
     }
+
 
     public int getWordsNumber() {
         return pool.size();

@@ -71,7 +71,7 @@ public class GameActivity extends Activity {
 
             float sensitvity = 50;
             if ((e1.getY() - e2.getY()) > sensitvity) {
-                popWord();
+                handlePopWord();
             } else if ((e2.getY() - e1.getY()) > sensitvity) {
                 finishRound();
             }
@@ -87,7 +87,7 @@ public class GameActivity extends Activity {
     private void update(){
         currentTeamPlaying = TeamPool.getInstance().getNextTeamPlaying(roundNumber);
 
-        timerLabel.setText(roundLength);
+        timerLabel.setText(roundLength + "s");
         textInfo.setText(currentTeamPlaying.currentSpeaker() + " -> " + currentTeamPlaying.currentListener());
         currentWordLabel.setText("");
 
@@ -107,7 +107,7 @@ public class GameActivity extends Activity {
         isPlaying = false;
         currentTeamPlaying.roundFinished();
         update();
-        dialog("А сейчас хуи сосут " + currentTeamPlaying.teamNames());
+        dialog("Раунд закончен, а тем временем хуи сосут " + currentTeamPlaying.teamNames());
     }
 
     private void finishGame() {
@@ -157,7 +157,6 @@ public class GameActivity extends Activity {
         }
 
         currentWordLabel.setText(currentWord.getValue());
-        setButtonsEnabled(false, true);
     }
 
     private void setButtonsEnabled(boolean popWord, boolean pushWord) {
@@ -165,9 +164,11 @@ public class GameActivity extends Activity {
         pushWordButton.setEnabled(pushWord);
     }
 
-    public void popWordFromHat(View view) {
+    private void handlePopWord()
+    {
         if (!isPlaying) {
             popWordButton.setText("Слово угадано");
+            setButtonsEnabled(true, true);
             startRound();
         } else {
             WordsPool.getInstance().wordGuessed();
@@ -182,7 +183,11 @@ public class GameActivity extends Activity {
         }
     }
 
-    public void pushWordButtonClick(View view) {
+    public void popWordFromHat(View view) {
+         handlePopWord();
+    }
+
+    public void pushWordButtonCli5ck(View view) {
         finishRound();
     }
 
@@ -195,7 +200,6 @@ public class GameActivity extends Activity {
 
             @Override
             public void onFinish() {
-                timerLabel.setText("Раунд закончен!");
                 finishRound();
             }
         };
@@ -207,7 +211,6 @@ public class GameActivity extends Activity {
     public void stopTimer() {
         if (roundTimer != null)
             roundTimer.cancel();
-        timerLabel.setText("Раунд закончен!");
         isPlaying = false;
     }
 }
