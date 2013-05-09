@@ -1,6 +1,8 @@
 package com.alperovichsimon;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.GestureDetector;
@@ -85,10 +87,25 @@ public class GameActivity extends Activity   {
     GestureDetector gestureDetector
             = new GestureDetector(simpleOnGestureListener);
 
+    private void Dialog(String message)
+    {
+        AlertDialog ad = new AlertDialog.Builder(this).create();
+        ad.setCancelable(false); // This blocks the 'BACK' button
+        ad.setMessage(message);
+        ad.setButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        ad.show();
+    }
+
 
     private void StartRound()
     {
-
+        isPlaying = true;
+        popWord();
         startTimer();
     }
 
@@ -103,6 +120,7 @@ public class GameActivity extends Activity   {
 
         isPlaying = false;
         currentTeamPlaying = TeamPool.getInstance().getNextTeamPlaying(roundNumber++);
+        Dialog("А сейчас хуи сосут " + currentTeamPlaying );
     }
 
     private void FinishGame()
@@ -143,9 +161,7 @@ public class GameActivity extends Activity   {
 
     public void PopWordFromHat (View view)
     {
-        isPlaying = true;
-        popWord();
-        startTimer();
+        StartRound();
     }
 
     public void PushWordButtonClick (View view)
