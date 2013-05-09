@@ -21,13 +21,13 @@ import com.alperovichsimon.gamemodel.*;
  * Time: 1:33
  * To change this template use File | Settings | File Templates.
  */
-public class GameActivity extends Activity   {
+public class GameActivity extends Activity {
 
     ViewFlipper page;
-    private Button guessedWordButton;
     private Button popWordButton;
     private Button pushWordButton;
     private TextView timerLabel;
+    private TextView textInfo;
     private TextView currentWordLabel;
 
 
@@ -40,109 +40,116 @@ public class GameActivity extends Activity   {
     //TODO: extract to another class
     private final int roundLength = 15;
 
-    private GestureDetector.SimpleOnGestureListener simpleOnGestureListener
-            = new GestureDetector.SimpleOnGestureListener(){
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.game);
 
+        popWordButton = (Button) findViewById(R.id.pop_word_button);
+        pushWordButton = (Button) findViewById(R.id.push_word_button);
+        timerLabel = (TextView) findViewById(R.id.timer);
+        currentWordLabel = (TextView) findViewById(R.id.current_word);
+        textInfo = (TextView) findViewById(R.id.textInfo);
+
+
+
+        initialize();
+        update();
+
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    private GestureDetector.SimpleOnGestureListener simpleOnGestureListener
+            = new GestureDetector.SimpleOnGestureListener() {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                float velocityY) {
 
             float sensitvity = 50;
-            if((e1.getY() - e2.getY()) > sensitvity){
+            if ((e1.getY() - e2.getY()) > sensitvity) {
                 popWord();
-            }else if((e2.getY() - e1.getY()) > sensitvity){
+            } else if ((e2.getY() - e1.getY()) > sensitvity) {
                 finishRound();
             }
 
             return true;
         }
-
     };
 
     private GestureDetector gestureDetector
             = new GestureDetector(simpleOnGestureListener);
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.game);
 
-        guessedWordButton = (Button) findViewById(R.id.guessed_word_button);
-        popWordButton = (Button) findViewById(R.id.pop_word_button);
-        pushWordButton = (Button) findViewById(R.id.push_word_button);
-        timerLabel = (TextView) findViewById(R.id.timer);
-        currentWordLabel = (TextView) findViewById(R.id.current_word);
+    private void update(){
+        currentTeamPlaying = TeamPool.getInstance().getNextTeamPlaying(roundNumber);
 
-        pushWordButton.setEnabled(false);
-        guessedWordButton.setEnabled(false);
+        timerLabel.setText(roundLength);
+        textInfo.setText(currentTeamPlaying.currentSpeaker() + " -> " + currentTeamPlaying.currentListener());
+        currentWordLabel.setText("");
 
-        initialize();
+        setButtonsEnabled(true, false);
+        popWordButton.setText("Достать слово из шляпы");
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // TODO Auto-generated method stub
-        return gestureDetector.onTouchEvent(event);
-    }
-
-
-
-
-    private void startRound()
-    {
+    private void startRound() {
         isPlaying = true;
         popWord();
         startTimer();
     }
 
-    private void finishRound()
-    {
+    private void finishRound() {
         stopTimer();
-        currentWordLabel.setText("");
-
-        popWordButton.setEnabled(true);
-        pushWordButton.setEnabled(false);
-        guessedWordButton.setEnabled(false);
-
+        roundNumber++;
         isPlaying = false;
-        currentTeamPlaying = TeamPool.getInstance().getNextTeamPlaying(roundNumber++);
-        Dialog("А сейчас хуи сосут " + currentTeamPlaying );
+        currentTeamPlaying.roundFinished();
+        update();
+        dialog("А сейчас хуи сосут " + currentTeamPlaying.teamNames());
     }
 
-    private void finishGame()
-    {
+    private void finishGame() {
         stopTimer();
-        currentWordLabel.setText("Игра окончена! Идите нахуй!");
+        dialog("Игра окончена, идите нахуй!");
+        //Intent intent = new Intent(GameActivity.this, StatsActivity.class);
+        //GameActivity.this.startActivity(intent);
     }
 
-    private void initialize()
-    {
+    private void initialize() {
         Team a = new Team("pidorki");
-        a.addPlayer(new Player("nazarov"));
+        a.addPlayer(new Player("Таланов"));
+        a.addPlayer(new Player("Назаров"));
         Team b = new Team("gei");
-        b.addPlayer(new Player("alperovich"));
+        b.addPlayer(new Player("Альперович"));
+        b.addPlayer(new Player("Пел"));
 
         TeamPool.getInstance().addTeam(a);
         TeamPool.getInstance().addTeam(b);
+
+        WordsPool.getInstance().addWord(new Word("shalava"));
+        WordsPool.getInstance().addWord(new Word("olollo"));
+        WordsPool.getInstance().addWord(new Word("pushka"));
+        WordsPool.getInstance().addWord(new Word("petrushka"));
     }
 
 
-        private void Dialog(String message)
-        {
-            AlertDialog ad = new AlertDialog.Builder(this).create();
-            ad.setCancelable(false); // This blocks the 'BACK' button
-            ad.setMessage(message);
-            ad.setButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            ad.show();
-        }
-        
-    private void popWord()
-    {
-        currentWord  = WordsPool.getInstance().getNextWord();
+    private void dialog(String message) {
+        AlertDialog ad = new AlertDialog.Builder(this).create();
+        ad.setCancelable(false); // This blocks the 'BACK' button
+        ad.setMessage(message);
+        ad.setButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        ad.show();
+    }
+
+    private void popWord() {
+        currentWord = WordsPool.getInstance().getNextWord();
 
         if (currentWord == null) {
             finishGame();
@@ -150,33 +157,33 @@ public class GameActivity extends Activity   {
         }
 
         currentWordLabel.setText(currentWord.getValue());
-        popWordButton.setEnabled(false);
-        pushWordButton.setEnabled(true);
-        guessedWordButton.setEnabled(true);
+        setButtonsEnabled(false, true);
     }
 
-    public void popWordFromHat(View view)
-    {
-        startRound();
+    private void setButtonsEnabled(boolean popWord, boolean pushWord) {
+        popWordButton.setEnabled(popWord);
+        pushWordButton.setEnabled(pushWord);
     }
 
-    public void pushWordButtonClick(View view)
-    {
-        finishRound();
-    }
+    public void popWordFromHat(View view) {
+        if (!isPlaying) {
+            popWordButton.setText("Слово угадано");
+            startRound();
+        } else {
+            WordsPool.getInstance().wordGuessed();
+            currentTeamPlaying.wordGuessed(currentWord);
 
-    public void guessedWordButtonClick(View view)
-    {
-        WordsPool.getInstance().wordGuessed();
-        //currentTeamPlaying.addGuessedWord(currentWord);
-
-        currentWord  = WordsPool.getInstance().getNextWord();
-        if (currentWord != null)
-            currentWordLabel.setText(currentWord.getValue());
-        else
-        {
-            finishGame();
+            currentWord = WordsPool.getInstance().getNextWord();
+            if (currentWord != null)
+                currentWordLabel.setText(currentWord.getValue());
+            else {
+                finishGame();
+            }
         }
+    }
+
+    public void pushWordButtonClick(View view) {
+        finishRound();
     }
 
     public void startTimer() {
@@ -198,7 +205,7 @@ public class GameActivity extends Activity   {
     }
 
     public void stopTimer() {
-        if(roundTimer != null)
+        if (roundTimer != null)
             roundTimer.cancel();
         timerLabel.setText("Раунд закончен!");
         isPlaying = false;

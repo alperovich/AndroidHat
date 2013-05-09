@@ -18,43 +18,52 @@ public class Team {
     private List<Word> guessedWords = new ArrayList<Word>();
     private String name;
     private static final String TAG = "TEAM";
+    private int teamPlayed = 0;
 
-    public Team (String name)
-    {
+    public Team(String name) {
         this.name = name;
     }
 
-    public void addPlayer (Player player)
+    public void roundFinished()
     {
+        teamPlayed++;
+    }
+
+    public Player currentSpeaker() {
+        return players.get((teamPlayed) % players.size());
+    }
+
+    public Player currentListener() {
+        return players.get( (teamPlayed + 1 ) % players.size());
+    }
+
+    public String teamNames() {
+        String str = "";
+        for (Player player : players) {
+            str += player + " и ";
+        }
+        return str.substring(0, str.length() - 3);
+    }
+
+    public void addPlayer(Player player) {
         players.add(player);
     }
 
-    public void addPlayers (Player... players)
-    {
+    public void addPlayers(Player... players) {
         this.players.addAll(Arrays.asList(players));
     }
 
-    public void wordGuessed (Word word, Player playerWhichGuessed, Player playerWhichOffered )
-    {
-        if (!hasPlayer(playerWhichGuessed)) {
-            Log.v(TAG, "Team " + name + "doesn't have player " + playerWhichGuessed);
-            return;
-        }
-        if (!hasPlayer(playerWhichOffered)) {
-            Log.v(TAG, "Team " + name + "doesn't have player " + playerWhichOffered);
-            return;
-        }
+    public void wordGuessed(Word word) {
         guessedWords.add(word);
-        playerWhichGuessed.guessedWord(word);
-        playerWhichOffered.offeredWord(word);
+        currentListener().guessedWord(word);
+        currentSpeaker().offeredWord(word);
     }
 
-    public int guessedWordsCount ()
-    {
+    public int guessedWordsCount() {
         return guessedWords.size();
     }
 
-    public boolean hasPlayer (Player player) {
+    public boolean hasPlayer(Player player) {
         return players.contains(player);
     }
 
