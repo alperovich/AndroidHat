@@ -67,4 +67,8 @@ public class Team {
         return players.contains(player);
     }
 
+    public List<Player> getPlayers() {
+        return new ArrayList<Player>(players);
+    }
+
 }

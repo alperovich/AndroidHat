@@ -33,7 +33,7 @@ public class TeamPool {
     }
 
     public List<Team> getPool(){
-        return pool;
+        return new ArrayList<Team>(pool);
     }
 
     public int getTeamsNumber(){
