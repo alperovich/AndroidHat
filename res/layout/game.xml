@@ -41,13 +41,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-        <Button
-                android:id="@+id/guessed_word_button"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/guessed_word_text"
-                android:onClick="guessedWordButtonClick"/>
+
         <Button
                 android:id="@+id/pop_word_button"
                 android:layout_width="fill_parent"
