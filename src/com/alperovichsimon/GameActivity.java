@@ -243,12 +243,9 @@ public class GameActivity extends Activity {
 
     private void playSound(){
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        float actualVolume = (float) audioManager
-                .getStreamVolume(AudioManager.STREAM_MUSIC);
-        float maxVolume = (float) audioManager
-                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         float volume = actualVolume / maxVolume;
-        // Is the sound loaded already?
         if (loaded) {
             soundPool.play(soundID, volume, volume, 1, 0, 1f);
         }
