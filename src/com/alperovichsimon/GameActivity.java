@@ -106,8 +106,8 @@ public class GameActivity extends Activity {
         roundNumber++;
         isPlaying = false;
         currentTeamPlaying.roundFinished();
-        dialog("Раунд закончен, а тем временем хуи сосут " + currentTeamPlaying.teamNames());
         update();
+        dialog("Раунд закончен, а тем временем хуи сосут " + currentTeamPlaying.teamNames());
     }
 
     private void finishGame() {
