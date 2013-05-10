@@ -1,6 +1,8 @@
 package com.alperovichsimon.gamemodel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Simon Alperovich
@@ -8,89 +10,89 @@ import java.util.*;
  * Time: 2:55
  */
 public class WordsPool {
-    private static WordsPool INSTANCE;
+  private static WordsPool INSTANCE;
 
-    private ArrayList<Word> pool = new ArrayList<Word>();
+  private ArrayList<Word> pool = new ArrayList<Word>();
 
-    private int curIndex = 0;
-    private int notGuessedNumber = 0;
+  private int curIndex = 0;
+  private int notGuessedNumber = 0;
 
-    private int hardNumber;
-    private int mediumNumber;
-    private int easyNumber;
-    private Word currentWord;
+  private int hardNumber;
+  private int mediumNumber;
+  private int easyNumber;
+  private Word currentWord;
 
 
-    private WordsPool() {
+  private WordsPool() {
+  }
+
+  public void addWord(Word word) {
+    pool.add(word);
+    switch (word.getLevel()) {
+      case HARD:
+        ++hardNumber;
+        break;
+      case MEDIUM:
+        ++mediumNumber;
+        break;
+      case EASY:
+        ++easyNumber;
+    }
+    notGuessedNumber++;
+  }
+
+
+  public int getHardNumber() {
+    return hardNumber;
+  }
+
+  public int getMediumNumber() {
+    return mediumNumber;
+  }
+
+  public int getEasyNumber() {
+    return easyNumber;
+  }
+
+  public void wordGuessed() {
+    if (notGuessedNumber == 0) {
+      return;
     }
 
-    public void addWord(Word word) {
-        pool.add(word);
-        switch (word.getLevel()) {
-            case HARD:
-                ++hardNumber;
-                break;
-            case MEDIUM:
-                ++mediumNumber;
-                break;
-            case EASY:
-                ++easyNumber;
-        }
-        notGuessedNumber++;
+    Collections.swap(pool, curIndex, notGuessedNumber - 1);
+    notGuessedNumber--;
+  }
+
+  //null if all words have been guessed
+  public Word getNextWord() {
+    if (notGuessedNumber == 0) {
+      return null;
     }
+    curIndex = new Random().nextInt(notGuessedNumber);
+    return pool.get(curIndex);
+  }
 
 
-    public int getHardNumber() {
-        return hardNumber;
+  public int getWordsNumber() {
+    return pool.size();
+  }
+
+  public void deleteAll() {
+    pool.clear();
+
+    hardNumber = 0;
+    mediumNumber = 0;
+    easyNumber = 0;
+
+    curIndex = 0;
+    notGuessedNumber = 0;
+  }
+
+  public static synchronized WordsPool getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new WordsPool();
     }
-
-    public int getMediumNumber() {
-        return mediumNumber;
-    }
-
-    public int getEasyNumber() {
-        return easyNumber;
-    }
-
-    public void wordGuessed() {
-        if (notGuessedNumber == 0) {
-            return;
-        }
-
-        Collections.swap(pool, curIndex, notGuessedNumber - 1);
-        notGuessedNumber--;
-    }
-
-    //null if all words have been guessed
-    public Word getNextWord() {
-        if (notGuessedNumber == 0) {
-            return null;
-        }
-        curIndex = new Random().nextInt(notGuessedNumber);
-        return pool.get(curIndex);
-    }
-
-
-    public int getWordsNumber() {
-        return pool.size();
-    }
-
-    public void deleteAll() {
-        pool.clear();
-
-        hardNumber = 0;
-        mediumNumber = 0;
-        easyNumber = 0;
-
-        curIndex = 0;
-        notGuessedNumber = 0;
-    }
-
-    public static synchronized WordsPool getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new WordsPool();
-        }
-        return INSTANCE;
-    }
+    return INSTANCE;
+  }
 
 }

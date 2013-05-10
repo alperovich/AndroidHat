@@ -1,6 +1,7 @@
 package com.alperovichsimon.gamemodel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simon Alperovich
@@ -8,36 +9,35 @@ import java.util.*;
  * Time: 2:30
  */
 public class TeamPool {
-    private static TeamPool INSTANCE;
+  private static TeamPool INSTANCE;
 
-    private List<Team> pool = new ArrayList<Team>();
+  private List<Team> pool = new ArrayList<Team>();
 
-    public Team getNextTeamPlaying(int number)
-    {
-        return pool.get( (number - 1 ) % pool.size());
+  public Team getNextTeamPlaying(int number) {
+    return pool.get((number - 1) % pool.size());
+  }
+
+  private TeamPool() {
+
+  }
+
+  public static synchronized TeamPool getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new TeamPool();
     }
+    return INSTANCE;
+  }
 
-    private TeamPool() {
+  public void addTeam(Team team) {
+    pool.add(team);
+  }
 
-    }
+  public List<Team> getPool() {
+    return new ArrayList<Team>(pool);
+  }
 
-    public static synchronized TeamPool getInstance() {
-        if (INSTANCE == null){
-            INSTANCE  = new TeamPool();
-        }
-        return INSTANCE;
-    }
-
-    public void addTeam(Team team) {
-        pool.add(team);
-    }
-
-    public List<Team> getPool(){
-        return new ArrayList<Team>(pool);
-    }
-
-    public int getTeamsNumber(){
-        return pool.size();
-    }
+  public int getTeamsNumber() {
+    return pool.size();
+  }
 
 }
