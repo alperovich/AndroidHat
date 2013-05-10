@@ -119,12 +119,12 @@ public class GameActivity extends Activity {
         isPlaying = false;
         currentTeamPlaying.roundFinished();
         update();
-        dialog("Раунд закончен, а тем временем хуи сосут " + currentTeamPlaying.teamNames());
+        dialog("Раунд закончен!\nТеперь загадывает " + currentTeamPlaying.currentSpeaker());
     }
 
     private void finishGame() {
         stopTimer();
-        dialog("Игра окончена, идите нахуй!", new DialogInterface.OnClickListener() {
+        dialog("Игра окончена!\nТеперь посмотрим статистику!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -144,11 +144,6 @@ public class GameActivity extends Activity {
 
         TeamPool.getInstance().addTeam(a);
         TeamPool.getInstance().addTeam(b);
-
-        WordsPool.getInstance().addWord(new Word("shalava"));
-        WordsPool.getInstance().addWord(new Word("olollo"));
-        WordsPool.getInstance().addWord(new Word("pushka"));
-        WordsPool.getInstance().addWord(new Word("petrushka"));
     }
 
 

@@ -14,12 +14,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+
 /**
- * Created with IntelliJ IDEA.
- * User: Сеня
+ * Simon Alperovich
  * Date: 21.04.13
  * Time: 0:51
- * To change this template use File | Settings | File Templates.
  */
 public class WordsPersistenceManager {
     private static WordsPersistenceManager INSTANCE;
