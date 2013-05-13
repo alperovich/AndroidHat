@@ -55,8 +55,10 @@ public class MainActivity extends Activity {
   }
 
   private void update() {
-    wordsCounter.setText(getString(R.string.word_counter_text) + " " + WordsPool.getInstance().getWordsNumber());
-    playersCounter.setText(getString(R.string.player_counter_text) + " " + TeamPool.getInstance().getTeamsNumber());
+    wordsCounter.setText(getString(R.string.word_counter_text) + " " +
+                                   WordsPool.getInstance().getWordsNumber());
+    playersCounter.setText(getString(R.string.player_counter_text) + " " + 
+                                     TeamPool.getInstance().getTeamsNumber());
   }
 
   public void newGameButtonClick(View view) {

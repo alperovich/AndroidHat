@@ -6,7 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.alperovichsimon.gamemodel.Player;
 import com.alperovichsimon.gamemodel.Team;
+
+import java.util.List;
 
 public class TeamListAdapter extends ArrayAdapter<Team> {
 
@@ -48,6 +51,7 @@ public class TeamListAdapter extends ArrayAdapter<Team> {
   /* speed up by using static @TeamViewHolder class */
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
+    //TODO: more than two players in a team
     View row = convertView;
     TeamViewHolder holder = null;
     if (row == null) {
@@ -56,6 +60,7 @@ public class TeamListAdapter extends ArrayAdapter<Team> {
       row = inflater.inflate(this.getLayoutResourceId(), parent, false);
       TextView firstPlayer = (TextView) row.findViewById(R.id.first_player);
       TextView secondPlayer = (TextView) row.findViewById(R.id.second_player);
+      holder = new TeamViewHolder();
       holder.setFirstPlayer(firstPlayer);
       holder.setSecondPlayer(secondPlayer);
       row.setTag(holder);
@@ -63,7 +68,10 @@ public class TeamListAdapter extends ArrayAdapter<Team> {
       holder = (TeamViewHolder) row.getTag();
     }
     Team curTeam = teams[position];
-    holder.getFirstPlayer().setText(curTeam.
+    assert (curTeam.getPlayers().size() > 1);
+    List<Player> teamPlayers = curTeam.getPlayers();
+    holder.getFirstPlayer().setText(teamPlayers.get(0).getName());
+    holder.getSecondPlayer().setText(teamPlayers.get(1).getName());
 
     return row;
   }

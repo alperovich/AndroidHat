@@ -1,6 +1,7 @@
 package com.alperovichsimon.gamemodel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simon Alperovich
@@ -32,7 +33,7 @@ public class TeamPool {
   }
 
   public List<Team> getPool() {
-    return pool;
+    return new ArrayList<Team>(pool);
   }
 
   public int getTeamsNumber() {

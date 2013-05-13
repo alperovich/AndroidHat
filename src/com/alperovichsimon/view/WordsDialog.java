@@ -9,7 +9,7 @@ import android.content.Context;
  * Time: 14:10
  */
 public class WordsDialog extends AlertDialog {
-    protected WordsDialog(Context context) {
-        super(context);
-    }
+  protected WordsDialog(Context context) {
+    super(context);
+  }
 }

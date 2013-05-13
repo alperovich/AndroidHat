@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:singleLine="true"
-        android:padding="10db"
+        android:padding="10dp"
         android:layout_marginRight="10pt"
         android:layout_marginLeft="5pt"
         />
@@ -35,14 +35,17 @@
       android:orientation="horizontal"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:layout_weight="6"
+      android:layout_weight="4"
       android:gravity="center"
+      android:padding="20dp"
+      android:background="#AFAFAF"
       >
     <ListView
       android:id="@+id/team_list_view"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="15pt"
+      android:layout_margin="15dp"
+      android:background="#FFFFFF"
     />
   </LinearLayout>
 

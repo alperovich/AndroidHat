@@ -3,16 +3,42 @@
     <hard>
         <word>Волокно</word>
         <word>Сукно</word>
+        <word>Нежность</word>
+        <word>Выручка</word>
+        <word>Подкат</word>
+        <word>Кандибобер</word>
+        <word>Величина</word>
+        <word>Энтропия</word>
+        <word>Великолепие</word>
+        <word>Расслабление</word>
+        <word>Живность</word>
+        <word>Мумия</word>
     </hard>
     <medium>
-        <word>Вагина</word>
-        <word>Член</word>
-        <word>Идиот</word>
+        <word>Домино</word>
+        <word>Марафон</word>
+        <word>Измерение</word>
+        <word>Антилопа</word>
+        <word>Чистота</word>
+        <word>Запах</word>
+        <word>Колкость</word>
+        <word>Просьба</word>
+        <word>Объем</word>
+        <word>Честность</word>
+        <word>Путь</word>
     </medium>
     <easy>
         <word>Скатерть</word>
         <word>Чайник</word>
-        <word>Петька</word>
-        <word>Васька</word>
+        <word>Гном</word>
+        <word>Паук</word>
+        <word>Дно</word>
+        <word>Еж</word>
+        <word>Порядок</word>
+        <word>Мел</word>
+        <word>Разговор</word>
+        <word>Черепаха</word>
+        <word>Беда</word>
+        <word>Радость</word>
     </easy>
 </words>

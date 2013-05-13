@@ -23,6 +23,7 @@ public class PlayersActivity extends Activity {
     TeamPool teamPool = TeamPool.getInstance();
     Team newTeam = new Team("Team #" + teamPool.getTeamsNumber());
     newTeam.addPlayer(newPlayer);
+    newTeam.addPlayer(new Player("huishuis"));
     teamPool.addTeam(newTeam);
   }
 
@@ -64,7 +65,6 @@ public class PlayersActivity extends Activity {
   private void prepare() {
     addPlayerButton = (Button) findViewById(R.id.add_player_button);
     playerText = (EditText) findViewById(R.id.add_player_edittext);
-    teamListView = (ListView) findViewById(R.id.team_list_view);
     displayTeamListView();
     addPlayerButton.setOnClickListener(new View.OnClickListener() {
 
@@ -81,18 +81,16 @@ public class PlayersActivity extends Activity {
   }
 
   private void displayTeamListView() {
-    teamListView.setAdapter(dataAdapter);
+    TeamPool teamPool = TeamPool.getInstance();
+    Team[] teamArray = new Team[teamPool.getTeamsNumber()];
+    teamPool.getPool().toArray(teamArray);
+    teamListView = (ListView) findViewById(R.id.team_list_view);
+    teamListView.setAdapter(new TeamListAdapter(this, R.layout.team_row, teamArray));
   }
 
   private void update() {
     playerText.setText("");
     displayTeamListView();
-//    hardRadioButton.setText(getString(R.string.hard_level_text) + " " + pool.getHardNumber());
-//    mediumRadioButton.setText(getString(R.string.medium_level_text) + " " + pool.getMediumNumber());
-//    easyRadioButton.setText(getString(R.string.easy_level_text) + " " + pool.getEasyNumber());
-//
-//    wordsCounter.setText(getString(R.string.word_counter_text) + pool.getWordsNumber());
-
   }
 }
 

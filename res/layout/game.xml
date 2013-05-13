@@ -13,6 +13,36 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             >
+        <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28pt"
+                android:padding="10dip" android:layout_gravity="center" android:textColor="#ffff00"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textInfo" android:layout_gravity="center" android:textSize="10pt"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        <TextView
+                android:id="@+id/current_word"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="40dip"
+                android:layout_gravity="center"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
         <Button
                 android:id="@+id/pop_word_button"
                 android:layout_width="fill_parent"
@@ -21,32 +51,11 @@
                 android:text="@string/pop_word_text"
                 android:onClick="popWordFromHat"/>
         <Button
-                android:id="@+id/guessed_word_button"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/guessed_word_text"
-                android:onClick="guessedWordButtonClick"/>
-        <Button
                 android:id="@+id/push_word_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/push_word_text"
                 android:onClick="pushWordButtonClick"/>
-        <TextView
-                android:id="@+id/timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00"
-                android:textSize="40dip"
-                android:padding="10dip" />
-        <TextView
-                android:id="@+id/current_word"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textSize="40dip"
-                android:padding="10dip" />
     </LinearLayout>
 </LinearLayout>

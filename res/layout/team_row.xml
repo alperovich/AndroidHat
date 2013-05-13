@@ -6,22 +6,20 @@
               android:layout_height="match_parent">
 
   <TextView android:id="@+id/first_player"
-            android:layout_width="30dp"
+            android:layout_width="60pt"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="5dp"
-            android:layout_marginRight="15dp"
+            android:textSize="24dp"
+            android:layout_margin="5pt"
+            android:layout_marginRight="15pt"
       />
 
   <TextView android:id="@+id/second_player"
-            android:layout_width="30dp"
+            android:layout_width="60pt"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="5dp"
+            android:textSize="24dp"
+            android:layout_margin="5pt"
       />
 
 </LinearLayout>

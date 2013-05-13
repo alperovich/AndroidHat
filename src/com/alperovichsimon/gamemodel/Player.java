@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Сеня
+ * Simon Alperovich
  * Date: 21.04.13
  * Time: 0:27
- * To change this template use File | Settings | File Templates.
  */
+
 public class Player {
   private final List<Word> guessedWords = new ArrayList<Word>();
   private final List<Word> offeredWords = new ArrayList<Word>();
@@ -37,5 +36,13 @@ public class Player {
 
   public void offeredWord(Word word) {
     offeredWords.add(word);
+  }
+
+  public List<Word> guessedWords() {
+    return new ArrayList<Word>(guessedWords);
+  }
+
+  public List<Word> offeredWords() {
+    return new ArrayList<Word>(offeredWords);
   }
 }
