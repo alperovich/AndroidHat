@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AndroidHat</string>
-    <string name="title_text">Шляпа!</string>
-    <string name="start_button_text">Начать игру!</string>
-    <string name="edit_words_button_text">Слова</string>
-    <string name="edit_players_button_text">Игроки</string>
-    <string name="word_counter_text">Слов:</string>
-    <string name="player_counter_text">Игроков:</string>
-    <string name="words_minus_text"> - </string>
-    <string name="words_plus_text"> + </string>
-    <string name="hard_level_text">Сложные</string>
-    <string name="medium_level_text">Средние</string>
-    <string name="easy_level_text">Легкие</string>
-    <string name="add_words_text">Добавить</string>
-    <string name="word_error_text"></string>
-    <string name="delete_words_text">Удалить все слова</string>
-    <string name="guessed_word_text">Слово угадано</string>
-    <string name="pop_word_text">Достать из шляпы</string>
-    <string name="push_word_text">Положить в шляпу</string>
+  <string name="app_name">AndroidHat</string>
+  <string name="title_text">Шляпа!</string>
+  <string name="start_button_text">Начать игру!</string>
+  <string name="edit_words_button_text">Слова</string>
+  <string name="edit_players_button_text">Игроки</string>
+  <string name="word_counter_text">Слов:</string>
+  <string name="player_counter_text">Игроков:</string>
+  <string name="words_minus_text"> - </string>
+  <string name="words_plus_text"> + </string>
+  <string name="hard_level_text">Сложные</string>
+  <string name="medium_level_text">Средние</string>
+  <string name="easy_level_text">Легкие</string>
+  <string name="add_words_text">Добавить</string>
+  <string name="word_error_text"></string>
+  <string name="delete_words_text">Удалить все слова</string>
+  <string name="guessed_word_text">Слово угадано</string>
+  <string name="pop_word_text">Достать из шляпы</string>
+  <string name="push_word_text">Положить в шляпу</string>
+  <string name="add_player_text">Имя игрока</string>
+  <string name="add_player_button_text">Добавить игрока</string>
 </resources>

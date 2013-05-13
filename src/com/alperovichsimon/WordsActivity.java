@@ -1,3 +1,9 @@
+/**
+ * Simon Alperovich
+ * Date: 01.10.12
+ * Time: 16:54
+ */
+
 package com.alperovichsimon;
 
 import android.app.Activity;
@@ -14,11 +20,6 @@ import com.alperovichsimon.gamemodel.WordsPool;
 import com.alperovichsimon.persistence.WordsPersistenceManager;
 
 
-/**
- * Simon Alperovich
- * Date: 01.10.12
- * Time: 16:54
- */
 public class WordsActivity extends Activity {
     private Button plusButton;
     private Button minusButton;
