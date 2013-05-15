@@ -11,6 +11,7 @@
             android:label="@string/app_name"
             >
         <activity android:name="MainActivity"
+                  android:label="MAin"
                   android:configChanges="keyboardHidden|orientation"
                   android:screenOrientation="portrait">
             <intent-filter>

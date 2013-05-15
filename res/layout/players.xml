@@ -9,7 +9,8 @@
       android:orientation="horizontal"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:layout_weight="1"
+      android:paddingBottom="10pt"
+      android:paddingTop="10pt"
       android:gravity="center"
       >
     <EditText
@@ -21,6 +22,8 @@
         android:padding="10dp"
         android:layout_marginRight="10pt"
         android:layout_marginLeft="5pt"
+        android:hint="@string/add_player_text"
+        style="?android:editTextStyle"
         />
     <Button
         android:id="@+id/add_player_button"
@@ -28,24 +31,26 @@
         android:layout_weight="2"
         android:layout_height="wrap_content"
         android:layout_marginRight="5pt"
+        android:textSize="16sp"
         android:text="@string/add_player_button_text"
+        style="?android:button"
         />
   </LinearLayout>
   <LinearLayout
       android:orientation="horizontal"
-      android:layout_width="fill_parent"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="4"
       android:gravity="center"
-      android:padding="20dp"
-      android:background="#AFAFAF"
+      android:background="@drawable/border_ui"
       >
     <ListView
-      android:id="@+id/team_list_view"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="15dp"
-      android:background="#FFFFFF"
+        android:id="@+id/team_list_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_gravity="top"
+        />
     />
   </LinearLayout>
 

@@ -18,6 +18,7 @@
   <string name="guessed_word_text">Слово угадано</string>
   <string name="pop_word_text">Достать из шляпы</string>
   <string name="push_word_text">Положить в шляпу</string>
+
   <string name="add_player_text">Имя игрока</string>
-  <string name="add_player_button_text">Добавить игрока</string>
+  <string name="add_player_button_text">Добавить</string>
 </resources>

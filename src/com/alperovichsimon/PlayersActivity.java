@@ -23,7 +23,7 @@ public class PlayersActivity extends Activity {
     TeamPool teamPool = TeamPool.getInstance();
     Team newTeam = new Team("Team #" + teamPool.getTeamsNumber());
     newTeam.addPlayer(newPlayer);
-    newTeam.addPlayer(new Player("huishuis"));
+    newTeam.addPlayer(new Player("Второй игрок"));
     teamPool.addTeam(newTeam);
   }
 

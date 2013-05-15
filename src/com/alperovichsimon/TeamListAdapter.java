@@ -1,6 +1,7 @@
 package com.alperovichsimon;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,10 @@ public class TeamListAdapter extends ArrayAdapter<Team> {
     List<Player> teamPlayers = curTeam.getPlayers();
     holder.getFirstPlayer().setText(teamPlayers.get(0).getName());
     holder.getSecondPlayer().setText(teamPlayers.get(1).getName());
+    if (position % 2 == 0)
+      row.setBackgroundColor(Color.GRAY);
+    else
+      row.setBackgroundColor(Color.rgb(255, 150, 150));
 
     return row;
   }
